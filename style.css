@@ -42,11 +42,18 @@
 	grid-template-columns: repeat(3, 1fr);
 	grid-template-rows: repeat(3, 1fr);
 	gap: 10px;
-    background-color: #004879;
+    /* background-color: var(--grey-lighter); */
 }
 
 .field {
 	width: 10rem;
 	height: 10rem;
 	background-color: var(--white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 5rem;
+    text-transform: uppercase;
+    font-weight: 300;
+    color: var(--dark-blue-two);
 }
