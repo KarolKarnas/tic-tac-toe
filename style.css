@@ -18,6 +18,7 @@
     --padding-h3: 5px; */
 }
 
+
 *,
 *::before,
 *::after {
@@ -28,10 +29,21 @@
 	font-weight: 300;
 }
 
-.container {
+body {
 	width: 100vw;
 	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 	background-color: var(--blue-two);
+	gap: 2rem;
+}
+
+.container {
+	width: 70vw;
+	height: 80vh;
+	background-color: var(--blue);
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -56,4 +68,31 @@
     text-transform: uppercase;
     font-weight: 300;
     color: var(--dark-blue-two);
+}
+
+.field:hover {
+	background-color: var(--light-blue);
+	cursor: pointer;
+}
+
+
+.buttons {
+	width: 70vw;
+	height: 10vh;
+	background-color: var(--white);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.buttons > * {
+	margin: 1rem;
+	padding: 1rem;
+	text-transform: uppercase;
+	border-radius: 0;
+}
+
+.buttons > *:hover {
+	background-color: var(--light-blue);
+	cursor: pointer;
 }
