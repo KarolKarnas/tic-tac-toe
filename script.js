@@ -5,15 +5,15 @@ let gameBoard = (() => {
 	container.appendChild(boardGameContainer);
 
 	let gameBoardFields = [
-		{ id: 'f1', mark: 'o' },
-		{ id: 'f2', mark: 'x' },
-		{ id: 'f3', mark: 'o' },
-		{ id: 'f4', mark: 'x' },
-		{ id: 'f5', mark: 'o' },
-		{ id: 'f6', mark: 'x' },
-		{ id: 'f7', mark: 'o' },
-		{ id: 'f8', mark: 'x' },
-		{ id: 'f9', mark: 'o' },
+		{ id: 'f1', mark: '' },
+		{ id: 'f2', mark: '' },
+		{ id: 'f3', mark: '' },
+		{ id: 'f4', mark: '' },
+		{ id: 'f5', mark: '' },
+		{ id: 'f6', mark: '' },
+		{ id: 'f7', mark: '' },
+		{ id: 'f8', mark: '' },
+		{ id: 'f9', mark: '' },
 	];
 
 	for (let i = 0; i < 9; i++) {
@@ -26,35 +26,93 @@ let gameBoard = (() => {
 		boardGameContainer.appendChild(boardField);
 	}
 
-	// add event onclick
-
-	let allFields = document.querySelectorAll('.field');
-	allFields.forEach(field => field.addEventListener('click', () => console.log('it work')))
-	console.log(allFields);
-
 	//----TEST methods and variables export
-	let readFields = () => console.log(gameBoardFields);
-	let changeMark = (num, mark) => (gameBoardFields[num] = mark);
+	// let readFields = () => console.log(gameBoardFields);
+	// let changeMark = (num, mark) => (gameBoardFields[num] = mark);
 
-	return { readFields, changeMark, gameBoardFields };
+	// return { readFields, changeMark, gameBoardFields };
 })();
 
-gameBoard.readFields();
-gameBoard.changeMark(0, 'x');
-console.log(gameBoard.gameBoardFields);
-console.log(gameBoard);
+//test
+// gameBoard.readFields();
+// gameBoard.changeMark(0, 'x');
+// console.log(gameBoard.gameBoardFields);
+// console.log(gameBoard);
 
-//create player One
+// player factory
 
-let playerOne = (name, mark) => {
-	const playerOneName = name;
-	const playerOneMark = mark;
-	const playerOneChange = () => gameBoard.changeMark(1, mark);
-	return { playerOneName, playerOneMark, playerOneChange };
-}; //factory
+let player = (name, mark) => {
+	let playerName = name;
+	let playerMark = mark;
+	return { playerName, playerMark };
+};
+// GAME
 
-const karol = playerOne('Karol', 'z');
-console.log(karol);
+let newGame = () => {
+	let p1 = player('p1', 'o');
+	console.log(p1);
+	let p2 = player('p2', 'x');
+	console.log(p2);
+
+	//switch players
+
+	let currentPlayer = p1;
+
+	let allFields = document.querySelectorAll('.field');
+
+	allFields.forEach((field) =>
+		field.addEventListener('click', function () {
+			if (currentPlayer === p1) {
+				//check isEmpty
+				// gameFlow - check forWin,nextRound
+				this.textContent = p1.playerMark;
+				currentPlayer = p2;
+				return;
+			} else if (currentPlayer === p2) {
+				this.textContent = p2.playerMark;
+				currentPlayer = p1;
+				return;
+			}
+		})
+	);
+};
+
+newGame();
+
+//create player ONE - factory
+// let playerOne = (name, mark) => {
+// 	const playerOneName = name;
+// 	const playerOneMark = mark;
+// 	const playerOneChange = () => gameBoard.changeMark(1, mark);
+
+// 	let allFields = document.querySelectorAll('.field');
+// 	allFields.forEach((field) =>
+// 		field.addEventListener('click', function () {
+// 			//check isEmpty
+// 			this.textContent = mark;
+// 			// gameFlow - check forWin,nextRound
+// 			//
+// 		})
+// 	    );
+
+// 	return { playerOneName, playerOneMark };
+// };
+
+// // Player Two
+
+// let playerTwo = (name, mark) => {
+// 	const playerTwoName = name;
+// 	const playerTwoMark = mark;
+// 	    let allFields = document.querySelectorAll('.field');
+// 	    allFields.forEach((field) =>
+// 	    field.addEventListener('click', function () {
+// 	        this.textContent = mark;
+// 	    })
+// 	);
+
+// 	return { playerTwoName, playerTwoMark };
+// };
+
 // let playerTwo = {}; //factory
 
 // let controlGameFlow = {}; //module - displayController?
@@ -65,6 +123,7 @@ console.log(karol);
 
 // console.log(boardGameContainer);
 
+//
 // let createGameBoard = function () {
 // 	for (let i = 0; i < 9; i++) {
 // 		//create one field
