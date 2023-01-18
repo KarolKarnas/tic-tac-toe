@@ -5,15 +5,15 @@ let gameBoard = (() => {
 	container.appendChild(boardGameContainer);
 
 	let gameBoardFields = [
-		{ id: 'f1', mark: '' },
-		{ id: 'f2', mark: '' },
-		{ id: 'f3', mark: '' },
-		{ id: 'f4', mark: '' },
-		{ id: 'f5', mark: '' },
-		{ id: 'f6', mark: '' },
-		{ id: 'f7', mark: '' },
-		{ id: 'f8', mark: '' },
-		{ id: 'f9', mark: '' },
+		{ mark: '' },
+		{ mark: '' },
+		{ mark: '' },
+		{ mark: '' },
+		{ mark: '' },
+		{ mark: '' },
+		{ mark: '' },
+		{ mark: '' },
+		{ mark: '' },
 	];
 
 	for (let i = 0; i < 9; i++) {
@@ -21,7 +21,7 @@ let gameBoard = (() => {
 		let boardField = document.createElement('div');
 		//add class id and mark
 		boardField.classList.add('field');
-		boardField.id = `${gameBoardFields[i].id}`;
+		// boardField.id = `${gameBoardFields[i].id}`;
 		boardField.textContent = `${gameBoardFields[i].mark}`;
 		boardGameContainer.appendChild(boardField);
 	}
@@ -30,7 +30,7 @@ let gameBoard = (() => {
 	// let readFields = () => console.log(gameBoardFields);
 	// let changeMark = (num, mark) => (gameBoardFields[num] = mark);
 
-	// return { readFields, changeMark, gameBoardFields };
+	return { gameBoardFields };
 })();
 
 //test
@@ -39,14 +39,15 @@ let gameBoard = (() => {
 // console.log(gameBoard.gameBoardFields);
 // console.log(gameBoard);
 
-// player factory
+// PLAYER factory
 
 let player = (name, mark) => {
 	let playerName = name;
 	let playerMark = mark;
 	return { playerName, playerMark };
 };
-// GAME
+
+// GAME factory
 
 let newGame = () => {
 	let p1 = player('p1', 'o');
@@ -54,25 +55,34 @@ let newGame = () => {
 	let p2 = player('p2', 'x');
 	console.log(p2);
 
-	//switch players
+	//DEFAULT current player
 
 	let currentPlayer = p1;
 
 	let allFields = document.querySelectorAll('.field');
+	// console.log(allFields);
 
-	allFields.forEach((field) =>
-		field.addEventListener('click', function () {
-			if (currentPlayer === p1) {
-				//check isEmpty
-				// gameFlow - check forWin,nextRound
+	// add mark on the field, update array gameBoardFields
+	allFields.forEach((element, index) =>
+		element.addEventListener('click', function () {
+			//check isEmpty, nextRound
+			if (this.textContent === '' && currentPlayer === p1) {
 				this.textContent = p1.playerMark;
+				gameBoard.gameBoardFields[index] = p1.playerMark;
+				console.log(gameBoard.gameBoardFields);
 				currentPlayer = p2;
 				return;
-			} else if (currentPlayer === p2) {
+			} else if (this.textContent === '' && currentPlayer === p2) {
 				this.textContent = p2.playerMark;
+				gameBoard.gameBoardFields[index] = p2.playerMark;
+				console.log(gameBoard.gameBoardFields);
 				currentPlayer = p1;
 				return;
 			}
+			// gameFlow - check forWin
+			//three in row determine winner
+			//all field tie
+			//start new game
 		})
 	);
 };
