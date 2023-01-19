@@ -37,7 +37,7 @@ body {
 	justify-content: center;
 	align-items: center;
 	background-color: var(--blue-two);
-	gap: 2rem;
+	gap: 1rem;
 }
 
 .container {
@@ -80,6 +80,15 @@ body {
 .buttons {
 	width: 70vw;
 	height: 10vh;
+	background-color: var(--white);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.result-display {
+	width: 70vw;
+	height: 5vh;
 	background-color: var(--white);
 	display: flex;
 	justify-content: center;

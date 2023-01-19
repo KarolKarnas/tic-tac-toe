@@ -66,13 +66,27 @@ let displayController = (() => {
 
 	//default player
 
-	let p1 = player('p1', 'o');
-	let p2 = player('p2', 'x');
+	let p1 = player('p1', 'O');
+	let p2 = player('p2', 'X');
 
 	// PLAYER NAMES
 
 	let playerOneInput = document.getElementById('player-one');
 	let playerTwoInput = document.getElementById('player-two');
+
+	// RESULT DISPLAY
+	let defaultTxt = 'WHO WILL WIN AND WHO WILL DIE?!';
+	let gameStartTxt;
+
+	
+	let resultDisplay = document.querySelector('.result-display');
+	// console.log(resultDisplay);
+	
+	let setResultDisplayTxt = function (txt) {
+		resultDisplay.textContent = txt;
+	};
+	
+	setResultDisplayTxt(defaultTxt);
 
 	// START BUTTON
 
@@ -81,6 +95,7 @@ let displayController = (() => {
 		console.log(p1);
 		p2.playerName = playerTwoInput.value;
 		console.log(p2);
+		gameStartTxt = `Who will win and who will DIE? ${p1.playerName} the '${p1.playerMark}' or ${p2.playerName} the '${p2.playerMark}'!?`;
 	};
 
 	let startGame = function () {
@@ -89,12 +104,14 @@ let displayController = (() => {
 		removeWin();
 		setGameOverFalse();
 		updatePlayersNames();
+		setResultDisplayTxt(gameStartTxt);
 	};
 
 	let startGameBtn = document.querySelector('.start-game-btn');
 	startGameBtn.addEventListener('click', startGame);
 
-	return { allFields, gameOver, p1, p2 };
+
+	return { allFields, gameOver, p1, p2, setResultDisplayTxt };
 })();
 
 // GAME module
@@ -130,19 +147,12 @@ let gameController = (() => {
 			}
 
 			if (checkWin()) {
-				console.log(currentPlayer);
+				// console.log(currentPlayer);
+				displayController.setResultDisplayTxt(`The winner is ${currentPlayer.playerName}! Congratulations, you live!`)
 			} else if (checkTie()) {
 				console.log('tie');
+				displayController.setResultDisplayTxt(`It is a tie! ${displayController.p1.playerName} and ${displayController.p2.playerName} you are WEAK!`)
 			}
-
-			// gameFlow - check forWin
-			//three in row determine winner
-			//all field tie
-			//start new game
-
-			// player name
-			// score
-			//hide
 		})
 	);
 	let changeWinFields = function (winOne, winTwo, winThree) {
@@ -247,4 +257,5 @@ let gameController = (() => {
 			return true;
 		}
 	};
+	return { currentPlayer };
 })();
