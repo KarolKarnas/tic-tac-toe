@@ -78,14 +78,13 @@ let displayController = (() => {
 	let defaultTxt = 'WHO WILL WIN AND WHO WILL DIE?!';
 	let gameStartTxt;
 
-	
 	let resultDisplay = document.querySelector('.result-display');
 	// console.log(resultDisplay);
-	
+
 	let setResultDisplayTxt = function (txt) {
 		resultDisplay.textContent = txt;
 	};
-	
+
 	setResultDisplayTxt(defaultTxt);
 
 	// START BUTTON
@@ -110,7 +109,6 @@ let displayController = (() => {
 	let startGameBtn = document.querySelector('.start-game-btn');
 	startGameBtn.addEventListener('click', startGame);
 
-
 	return { allFields, gameOver, p1, p2, setResultDisplayTxt };
 })();
 
@@ -120,7 +118,19 @@ let gameController = (() => {
 	let currentPlayer = displayController.p1;
 
 	// let allFields = document.querySelectorAll('.field');
-
+	let winChecker = function () {
+		if (checkWin()) {
+			// console.log(currentPlayer);
+			displayController.setResultDisplayTxt(
+				`The winner is ${currentPlayer.playerName}! Congratulations, you live!`
+			);
+		} else if (checkTie()) {
+			console.log('tie');
+			displayController.setResultDisplayTxt(
+				`It is a tie! ${displayController.p1.playerName} and ${displayController.p2.playerName} you are WEAK!`
+			);
+		}
+	};
 	// add mark on the field, update array gameBoardFields
 	displayController.allFields.forEach((element, index) =>
 		element.addEventListener('click', function () {
@@ -133,6 +143,7 @@ let gameController = (() => {
 				this.textContent = displayController.p1.playerMark;
 				gameBoard.gameBoardFields[index] = displayController.p1.playerMark;
 				console.log(gameBoard.gameBoardFields);
+				winChecker();
 				currentPlayer = displayController.p2;
 				// return;
 			} else if (
@@ -142,17 +153,18 @@ let gameController = (() => {
 				this.textContent = displayController.p2.playerMark;
 				gameBoard.gameBoardFields[index] = displayController.p2.playerMark;
 				console.log(gameBoard.gameBoardFields);
+				winChecker();
 				currentPlayer = displayController.p1;
 				// return;
 			}
 
-			if (checkWin()) {
-				// console.log(currentPlayer);
-				displayController.setResultDisplayTxt(`The winner is ${currentPlayer.playerName}! Congratulations, you live!`)
-			} else if (checkTie()) {
-				console.log('tie');
-				displayController.setResultDisplayTxt(`It is a tie! ${displayController.p1.playerName} and ${displayController.p2.playerName} you are WEAK!`)
-			}
+			// if (checkWin()) {
+			// 	// console.log(currentPlayer);
+			// 	displayController.setResultDisplayTxt(`The winner is ${currentPlayer.playerName}! Congratulations, you live!`)
+			// } else if (checkTie()) {
+			// 	console.log('tie');
+			// 	displayController.setResultDisplayTxt(`It is a tie! ${displayController.p1.playerName} and ${displayController.p2.playerName} you are WEAK!`)
+			// }
 		})
 	);
 	let changeWinFields = function (winOne, winTwo, winThree) {
