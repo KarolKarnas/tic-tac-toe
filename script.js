@@ -1,4 +1,4 @@
-// Board Module
+// BOARD Module
 
 let gameBoard = (() => {
 	let container = document.querySelector('.container');
@@ -18,6 +18,12 @@ let gameBoard = (() => {
 		boardGameContainer.appendChild(boardField);
 	}
 
+	return { gameBoardFields };
+})();
+
+// DISPLAY module
+
+let displayController = (() => {
 	// RESTART BUTTON
 	let allFields = document.querySelectorAll('.field');
 	let gameOver = true;
@@ -37,7 +43,7 @@ let gameBoard = (() => {
 	};
 
 	let setGameOverFalse = function () {
-		gameBoard.gameOver = false;
+		displayController.gameOver = false;
 	};
 
 	let restartGame = function () {
@@ -88,41 +94,45 @@ let gameBoard = (() => {
 	let startGameBtn = document.querySelector('.start-game-btn');
 	startGameBtn.addEventListener('click', startGame);
 
-	return { gameBoardFields, allFields, gameOver, p1, p2 };
+	return { allFields, gameOver, p1, p2 };
 })();
 
 // GAME module
 
-let newGame = (() => {
-
-	let currentPlayer = gameBoard.p1;
+let gameController = (() => {
+	let currentPlayer = displayController.p1;
 
 	// let allFields = document.querySelectorAll('.field');
 
 	// add mark on the field, update array gameBoardFields
-	gameBoard.allFields.forEach((element, index) =>
+	displayController.allFields.forEach((element, index) =>
 		element.addEventListener('click', function () {
-			if (gameBoard.gameOver) {
+			if (displayController.gameOver) {
 				return;
 			}
 
 			//check isEmpty, nextRound
-			if (this.textContent === '' && currentPlayer === gameBoard.p1) {
-				this.textContent = gameBoard.p1.playerMark;
-				gameBoard.gameBoardFields[index] = gameBoard.p1.playerMark;
+			if (this.textContent === '' && currentPlayer === displayController.p1) {
+				this.textContent = displayController.p1.playerMark;
+				gameBoard.gameBoardFields[index] = displayController.p1.playerMark;
 				console.log(gameBoard.gameBoardFields);
-				currentPlayer = gameBoard.p2;
+				currentPlayer = displayController.p2;
 				// return;
-			} else if (this.textContent === '' && currentPlayer === gameBoard.p2) {
-				this.textContent = gameBoard.p2.playerMark;
-				gameBoard.gameBoardFields[index] = gameBoard.p2.playerMark;
+			} else if (
+				this.textContent === '' &&
+				currentPlayer === displayController.p2
+			) {
+				this.textContent = displayController.p2.playerMark;
+				gameBoard.gameBoardFields[index] = displayController.p2.playerMark;
 				console.log(gameBoard.gameBoardFields);
-				currentPlayer = gameBoard.p1;
+				currentPlayer = displayController.p1;
 				// return;
 			}
 
-			if (!checkWin()) {
-				checkTie();
+			if (checkWin()) {
+				console.log(currentPlayer);
+			} else if (checkTie()) {
+				console.log('tie');
 			}
 
 			// gameFlow - check forWin
@@ -136,14 +146,13 @@ let newGame = (() => {
 		})
 	);
 	let changeWinFields = function (winOne, winTwo, winThree) {
-		console.log('You Win!');
-		gameBoard.allFields[winOne].classList.add('win');
-		gameBoard.allFields[winTwo].classList.add('win');
-		gameBoard.allFields[winThree].classList.add('win');
+		displayController.allFields[winOne].classList.add('win');
+		displayController.allFields[winTwo].classList.add('win');
+		displayController.allFields[winThree].classList.add('win');
 	};
 
 	let changeTieFields = function () {
-		gameBoard.allFields.forEach((el) => el.classList.add('tie'));
+		displayController.allFields.forEach((el) => el.classList.add('tie'));
 	};
 
 	// CHECK TIE
@@ -162,6 +171,7 @@ let newGame = (() => {
 		) {
 			changeTieFields();
 			gameBoard.gameOver = true;
+			return true;
 		}
 	};
 
@@ -175,7 +185,7 @@ let newGame = (() => {
 			gameBoard.gameBoardFields[0] === gameBoard.gameBoardFields[2]
 		) {
 			changeWinFields(0, 1, 2);
-			gameBoard.gameOver = true;
+			displayController.gameOver = true;
 			return true;
 		} else if (
 			gameBoard.gameBoardFields[3] !== '' &&
@@ -183,7 +193,7 @@ let newGame = (() => {
 			gameBoard.gameBoardFields[3] === gameBoard.gameBoardFields[5]
 		) {
 			changeWinFields(3, 4, 5);
-			gameBoard.gameOver = true;
+			displayController.gameOver = true;
 			return true;
 		} else if (
 			gameBoard.gameBoardFields[6] !== '' &&
@@ -191,7 +201,7 @@ let newGame = (() => {
 			gameBoard.gameBoardFields[6] === gameBoard.gameBoardFields[8]
 		) {
 			changeWinFields(6, 7, 8);
-			gameBoard.gameOver = true;
+			displayController.gameOver = true;
 			return true;
 		} //vertical win
 		else if (
@@ -200,7 +210,7 @@ let newGame = (() => {
 			gameBoard.gameBoardFields[0] === gameBoard.gameBoardFields[6]
 		) {
 			changeWinFields(0, 3, 6);
-			gameBoard.gameOver = true;
+			displayController.gameOver = true;
 			return true;
 		} else if (
 			gameBoard.gameBoardFields[1] !== '' &&
@@ -208,7 +218,7 @@ let newGame = (() => {
 			gameBoard.gameBoardFields[1] === gameBoard.gameBoardFields[7]
 		) {
 			changeWinFields(1, 4, 7);
-			gameBoard.gameOver = true;
+			displayController.gameOver = true;
 			return true;
 		} else if (
 			gameBoard.gameBoardFields[2] !== '' &&
@@ -216,7 +226,7 @@ let newGame = (() => {
 			gameBoard.gameBoardFields[2] === gameBoard.gameBoardFields[8]
 		) {
 			changeWinFields(2, 5, 8);
-			gameBoard.gameOver = true;
+			displayController.gameOver = true;
 			return true;
 		} //diagonal win
 		else if (
@@ -225,7 +235,7 @@ let newGame = (() => {
 			gameBoard.gameBoardFields[0] === gameBoard.gameBoardFields[8]
 		) {
 			changeWinFields(0, 4, 8);
-			gameBoard.gameOver = true;
+			displayController.gameOver = true;
 			return true;
 		} else if (
 			gameBoard.gameBoardFields[2] !== '' &&
@@ -233,7 +243,7 @@ let newGame = (() => {
 			gameBoard.gameBoardFields[2] === gameBoard.gameBoardFields[6]
 		) {
 			changeWinFields(2, 4, 6);
-			gameBoard.gameOver = true;
+			displayController.gameOver = true;
 			return true;
 		}
 	};
