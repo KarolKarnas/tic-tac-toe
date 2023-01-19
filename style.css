@@ -57,6 +57,7 @@ body {
     /* background-color: var(--grey-lighter); */
 }
 
+
 .field {
 	width: 10rem;
 	height: 10rem;
@@ -95,4 +96,21 @@ body {
 .buttons > *:hover {
 	background-color: var(--light-blue);
 	cursor: pointer;
+}
+
+
+.win {
+	background-color: var(--light-blue);
+	/* color: var(--red); */
+	font-weight: bold;
+	border: 3px solid var(--red);
+}
+
+.tie {
+	background-color: var(--red);
+	font-weight: bold;
+	color: var(--white);
+	border: 3px solid var(--light-blue);
+
+
 }
