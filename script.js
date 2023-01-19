@@ -18,66 +18,84 @@ let gameBoard = (() => {
 		boardGameContainer.appendChild(boardField);
 	}
 
+	// RESTART BUTTON
 	let allFields = document.querySelectorAll('.field');
-
-	// CLEAR FIELDS, CLEAR ARRAY, NEW GAME BUTTON
+	let gameOver = true;
 
 	let clearFields = function () {
 		allFields.forEach((element) => (element.textContent = ''));
 	};
-
-	let clearFieldsBtn = document.querySelector('.clear-fields-btn');
-	clearFieldsBtn.addEventListener('click', clearFields);
 
 	let clearArray = function () {
 		gameBoard.gameBoardFields = gameBoard.gameBoardFields.map(() => '');
 		console.log(gameBoard.gameBoardFields);
 	};
 
-	let clearArrayBtn = document.querySelector('.clear-array-btn');
-	clearArrayBtn.addEventListener('click', clearArray);
-
 	let removeWin = function () {
 		allFields.forEach((el) => el.classList.remove('win'));
 		allFields.forEach((el) => el.classList.remove('tie'));
 	};
 
-	let gameOver = false;
 	let setGameOverFalse = function () {
 		gameBoard.gameOver = false;
 	};
 
-	let clearAll = function () {
+	let restartGame = function () {
 		clearFields();
 		clearArray();
 		removeWin();
 		setGameOverFalse();
 	};
 
-	let newGameBtn = document.querySelector('.new-game-btn');
-	newGameBtn.addEventListener('click', clearAll);
+	let restartGameBtn = document.querySelector('.restart-game-btn');
+	restartGameBtn.addEventListener('click', restartGame);
 
-	return { gameBoardFields, allFields, gameOver };
+	// PLAYER factory function
+
+	let player = (name, mark) => {
+		let playerName = name;
+		let playerMark = mark;
+		return { playerName, playerMark };
+	};
+
+	//default player
+
+	let p1 = player('p1', 'o');
+	let p2 = player('p2', 'x');
+
+	// PLAYER NAMES
+
+	let playerOneInput = document.getElementById('player-one');
+	let playerTwoInput = document.getElementById('player-two');
+
+	// START BUTTON
+
+	let updatePlayersNames = function () {
+		p1.playerName = playerOneInput.value;
+		console.log(p1);
+		p2.playerName = playerTwoInput.value;
+		console.log(p2);
+	};
+
+	let startGame = function () {
+		clearFields();
+		clearArray();
+		removeWin();
+		setGameOverFalse();
+		updatePlayersNames();
+	};
+
+	let startGameBtn = document.querySelector('.start-game-btn');
+	startGameBtn.addEventListener('click', startGame);
+
+	return { gameBoardFields, allFields, gameOver, p1, p2 };
 })();
 
-// PLAYER factory function
+// GAME module
 
-let player = (name, mark) => {
-	let playerName = name;
-	let playerMark = mark;
-	return { playerName, playerMark };
-};
+let newGame = (() => {
 
-// GAME factory function
-
-let newGame = () => {
-	let p1 = player('p1', 'o');
-	console.log(p1);
-	let p2 = player('p2', 'x');
-	console.log(p2);
-	//DEFAULT current player
-
-	let currentPlayer = p1;
+	let currentPlayer = gameBoard.p1;
 
 	// let allFields = document.querySelectorAll('.field');
 
@@ -89,17 +107,17 @@ let newGame = () => {
 			}
 
 			//check isEmpty, nextRound
-			if (this.textContent === '' && currentPlayer === p1) {
-				this.textContent = p1.playerMark;
-				gameBoard.gameBoardFields[index] = p1.playerMark;
+			if (this.textContent === '' && currentPlayer === gameBoard.p1) {
+				this.textContent = gameBoard.p1.playerMark;
+				gameBoard.gameBoardFields[index] = gameBoard.p1.playerMark;
 				console.log(gameBoard.gameBoardFields);
-				currentPlayer = p2;
+				currentPlayer = gameBoard.p2;
 				// return;
-			} else if (this.textContent === '' && currentPlayer === p2) {
-				this.textContent = p2.playerMark;
-				gameBoard.gameBoardFields[index] = p2.playerMark;
+			} else if (this.textContent === '' && currentPlayer === gameBoard.p2) {
+				this.textContent = gameBoard.p2.playerMark;
+				gameBoard.gameBoardFields[index] = gameBoard.p2.playerMark;
 				console.log(gameBoard.gameBoardFields);
-				currentPlayer = p1;
+				currentPlayer = gameBoard.p1;
 				// return;
 			}
 
@@ -219,6 +237,4 @@ let newGame = () => {
 			return true;
 		}
 	};
-};
-
-newGame();
+})();
